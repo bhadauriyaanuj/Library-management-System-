@@ -1,0 +1,77 @@
+erDiagram
+    BOOKS ||--o{ BORROWINGS : "has many"
+    MEMBERS ||--o{ BORROWINGS : "makes many"
+    BOOKS ||--o{ BOOK_CATEGORIES : "belongs to"
+    CATEGORIES ||--o{ BOOK_CATEGORIES : "contains"
+    MEMBERS ||--o{ FINES : "may have"
+    BORROWINGS ||--o{ FINES : "may generate"
+    
+    BOOKS {
+        int book_id PK "Auto increment"
+        string title "Not null"
+        string author "Not null"
+        string isbn UK "Not null"
+        string publisher 
+        int publication_year
+        decimal price
+        int quantity "Not null"
+        int available "Not null"
+        text description
+        string location "Shelf number"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    MEMBERS {
+        int member_id PK "Auto increment"
+        string name "Not null"
+        string email UK "Not null"
+        string phone
+        string address
+        date join_date "Not null"
+        date membership_end
+        string membership_type "Regular/Premium"
+        int max_books "Borrowing limit"
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    BORROWINGS {
+        int borrow_id PK "Auto increment"
+        int book_id FK "Not null"
+        int member_id FK "Not null"
+        date borrow_date "Not null"
+        date due_date "Not null"
+        date return_date "Null until returned"
+        string status "Active/Overdue/Returned"
+        text notes
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CATEGORIES {
+        int category_id PK "Auto increment"
+        string name "Not null"
+        string description
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    BOOK_CATEGORIES {
+        int book_id FK "Not null"
+        int category_id FK "Not null"
+        timestamp created_at
+    }
+
+    FINES {
+        int fine_id PK "Auto increment"
+        int member_id FK "Not null"
+        int borrowing_id FK "Not null"
+        decimal amount "Not null"
+        string reason "Overdue/Damage/Lost"
+        boolean is_paid
+        date paid_date
+        timestamp created_at
+        timestamp updated_at
+    }
